@@ -1,5 +1,3 @@
-# cython: language_level=3, boundscheck=False, wraparound=False
-
 from cpython.object cimport PyObject, PyCallable_Check 
 from libcpp.unordered_map cimport unordered_map
 from libcpp.set cimport set

@@ -79,7 +79,7 @@ def compute_keep_probs(counts: torch.Tensor=None,
 
 if __name__ == "__main__":
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    data_dir = os.path.join(base_dir, "..", "..", "..", "..", "data")
+    data_dir = os.path.join(base_dir, "..", "..", "data")
     save_path = os.path.join(data_dir, "vocab.pt")
 
     train_iter = iter_wiki_sentences("train")
