@@ -4,8 +4,8 @@ pyximport.install(language_level=3)
 
 import torch
 import numpy as np
-from encode_corpus import encode_corpus
-from fast_count import iter_sentences
+from data_pipeline import encode_corpus
+from data_pipeline import iter_sentences
 import os
 
 
@@ -90,10 +90,10 @@ def get_negate_id(o_word2id, negate):
 
 if __name__ == "__main__":
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    saved_corpus_dir = os.path.join(base_dir, "..", "data", "test", "o_corpus.bin")
-    to_save_corpus_dir = os.path.join(base_dir, "..", "data", "test", "n_corpus.bin")
+    saved_corpus_dir = os.path.join(base_dir, "..", "..", "data", "test_embed", "o_corpus.bin")
+    to_save_corpus_dir = os.path.join(base_dir, "..", "..", "data", "test_embed", "n_corpus.bin")
     
-    vocab_dir = os.path.join(base_dir, "..", "data", "test", "vocab.pt")
+    vocab_dir = os.path.join(base_dir, "..", "..", "data", "test_embed", "vocab.pt")
     vocab = torch.load(vocab_dir)
     o_word2id = vocab["o_word2id"]
     old2new = vocab["old2new"]

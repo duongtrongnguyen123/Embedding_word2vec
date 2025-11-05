@@ -1,8 +1,7 @@
 import pyximport
 pyximport.install(language_level=3)
 
-import fast_count
-from fast_count import iter_sentences, first_pass, build_vocab
+from data_pipeline import iter_sentences, first_pass, build_vocab
 import torch
 import spacy
 import numpy as np
@@ -251,8 +250,8 @@ def encode_with_py(iter, o_word2id, old2new, old2new_for_pair, id2word):
 
 if __name__ == "__main__":
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    to_save_corpus_dir = os.path.join(base_dir, "..", "data", "test", "o_corpus.bin")
-    to_save_vocab_dir = os.path.join(base_dir, "..", "data", "test", "vocab.pt")
+    to_save_corpus_dir = os.path.join(base_dir, "..", "..", "data", "test_embed", "o_corpus.bin")
+    to_save_vocab_dir = os.path.join(base_dir, "..", "..", "data", "test_embed", "vocab.pt")
 
     os.makedirs(os.path.dirname(to_save_vocab_dir), exist_ok=True)
 

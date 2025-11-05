@@ -3,9 +3,9 @@ import os
 
 if __name__ == "__main__":
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    embed_i_dir = os.path.join(base_dir, "..", "..", "..", "data", "embed_in.pt")
-    embed_o_dir = os.path.join(base_dir, "..", "..", "..", "data", "embed_out.pt")
-    vocab_dir = os.path.join(base_dir, "..", "..", "..", "data", "vocab.pt")
+    embed_i_dir = os.path.join(base_dir, "..", "..", "data", "embed_in.pt")
+    embed_o_dir = os.path.join(base_dir, "..", "..", "data", "embed_out.pt")
+    vocab_dir = os.path.join(base_dir, "..", "..", "data", "vocab.pt")
 
     w_in = torch.load(embed_i_dir, map_location='cpu')
     w_out = torch.load(embed_o_dir, map_location='cpu')
