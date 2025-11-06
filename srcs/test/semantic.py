@@ -29,12 +29,9 @@ if __name__ == "__main__":
 
 
     expect_queen = w_norm[ids[0]] - w_norm[ids[2]] + w_norm[ids[3]]
-
     cos = expect_queen @ w_norm.T
     topv, topi = torch.topk(cos, k=10)
     print("Analogy (king - man + woman) ")
     for j in range(10):
         print(f"  {id2word[topi[j].item()]:<12} Cos: {topv[j].item():.3f}")
-
-    
 
