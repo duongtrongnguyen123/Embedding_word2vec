@@ -39,13 +39,13 @@ _CONTRACTIONS = (
     ("'s",  ()),
 )
 
+
 def expand_contraction(tok: str):
     for suf, exp in _CONTRACTIONS:
         if len(tok) > len(suf) and tok.endswith(suf):
             base = tok[:-len(suf)]
             return [base, *exp] if exp else [base]
     return [tok]
-
 
 
 def _norm_token(tok: str):
@@ -58,8 +58,10 @@ def _norm_token(tok: str):
             return "<nums>"
     return tok
 
+
 def train_iter_review_sentences(streaming=True):
-    ds = load_dataset("json", data_files=DATA_FILES, split="train", streaming=True)
+    ds = load_dataset("json", data_files=DATA_FILES, 
+                      split="train", streaming=True)
 
     subset = islice(ds, 10_000, 1_600_000)
 
@@ -99,9 +101,9 @@ def train_iter_review_sentences(streaming=True):
         yield out
 
 
-
 def valid_iter_review_sentences(streaming=True):
-    ds = load_dataset("json", data_files=DATA_FILES, split="train", streaming=True)
+    ds = load_dataset("json", data_files=DATA_FILES, 
+                      split="train", streaming=True)
 
     subset = islice(ds, 0, 10_000)
 

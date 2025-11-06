@@ -8,8 +8,7 @@ from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 import time
 
-from data_pipeline.data_pipe_ids import SkipGramPairIterable
-
+from ..data_pipeline.data_pipe_ids import SkipGramPairIterable
 
 
 class SGNS(nn.Module):
@@ -41,12 +40,14 @@ class SGNS(nn.Module):
         pos_score = (v_c * u_o).sum(dim=1)
 
         neg_score = (u_k * v_c.unsqueeze(1)).sum(dim=-1)
-        #neg_score = torch.bmm(u_k, v_c.unsqueeze(2)).squeeze(2)
+        #neg_score = torch.bmm(u_k, v_c.unsqueeze(2)).squeeze(2) (torch.bmm if gpu)
 
         return -(F.logsigmoid(pos_score) + F.logsigmoid(-neg_score).sum(dim=1)).mean()
+
     @torch.no_grad()
     def get_input_vectors(self):
         return self.embed_in.weight.detach().clone()
+
     @torch.no_grad()
     def get_output_vector(self):
         return self.embed_out.weight.detach().clone()
@@ -81,6 +82,7 @@ def evaluate(model: SGNS, word2id, id2word, wid=["happy", "good", "bad", "shit",
             print(f"  {word:10s}  Cos: {v.item():.3f}")
         print()
     
+
 class LossPlotter:
     def __init__(self):
         self.train_loss = []
@@ -150,10 +152,10 @@ if __name__ == "__main__":
                               prefetch_factor=8, persistent_workers=True, 
                               pin_memory=False)
 
-    start = time.time()
     base_seed = 111
 
     for epoch in range(10):
+        start = time.time()
         model.train()
         generator = torch.Generator(device=device).manual_seed(epoch+base_seed)
         train_loss = 0.0
@@ -167,7 +169,7 @@ if __name__ == "__main__":
             train_loss += loss * B
             total_sample += B
 
-            if step % 200 == 0:
+            if step % 200 == 0 and step >= 200:
                 stop = time.time()
                 elapsed = stop - start
                 prev_step = step-200
@@ -192,4 +194,4 @@ if __name__ == "__main__":
         valid_loss = valid_loss / total_sample
         evaluate(model, word2id, id2word)
         print(f"diff: {train_loss-valid_loss}")
-        #lossplot.update(epoch, train_loss, valid_loss)
+        lossplot.update(epoch, train_loss, valid_loss)

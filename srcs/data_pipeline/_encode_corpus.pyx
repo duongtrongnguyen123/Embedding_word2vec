@@ -84,8 +84,6 @@ cdef void save_corpus(const vector[u32]& new_encode,
 
 
 
-
-
 cdef _encode_corpus(cnp.ndarray[int32_t, ndim=1] old2new,
             set negate_id,                      # set of negate' s old id
             set skip_id,                        # set of skip_word's old id
@@ -105,11 +103,11 @@ cdef _encode_corpus(cnp.ndarray[int32_t, ndim=1] old2new,
     cdef unordered_set[u32].iterator it = negate_id_std.begin()
 
     #idx for index in array, id for word's id
-    cdef i32 prev_id, n_id                     #prev old_id (old vocab)
-    cdef u32 o_id                              #old id
+    cdef i32 prev_id, n_id                     # prev's id(old vocab)
+    cdef u32 o_id                              # word id (old vocab)
     cdef size_t cur_idx = 0
     cdef size_t o_sent_length, n_sent_length
-    cdef u64 o_pair_id                          #encode merge by old id
+    cdef u64 o_pair_id                         # pair's id (old vocab)
     cdef bool prev_in_negate = False            
     cdef size_t i, j
     for i in range(len(o_sizes)):
@@ -153,10 +151,9 @@ cdef _encode_corpus(cnp.ndarray[int32_t, ndim=1] old2new,
             j += 1
         cur_idx += o_sent_length
         n_sizes.push_back(n_sent_length)                          
-       
-    
     
     save_corpus(n_encode, n_sizes, str(to_save_path).encode("utf-8"))
+
 
 def encode_corpus(cnp.ndarray[int32_t, ndim=1] old2new,
             set negate_id,                      # set of negate' s old id

@@ -16,9 +16,7 @@ if __name__ == "__main__":
     old2new_for_pair = vocab["old2new_for_pair"]
     skip_id = vocab["skip_id"]
     negate_id = vocab["negate_id"]
-    id2word = vocab["id2word"]
-    word2id = vocab["word2id"]
-    o_word2id = vocab["o_word2id"]
-    keep_probs = vocab["keep_probs"]
+    # encode train set
     encode_corpus(old2new, negate_id, skip_id, old2new_for_pair, saved_train_corpus_dir, to_save_train_corpus_dir)
+    # encode validation set
     encode_corpus(old2new, negate_id, skip_id, old2new_for_pair, saved_valid_corpus_dir, to_save_valid_corpus_dir)

@@ -36,7 +36,6 @@ cdef inline u64 pair_id_encode(u32 a, u32 b) nogil:
     return ((<u64>a) << 32) | (<u64>b)
 
 
-
 cdef void save_corpus(const vector[u32]& o_encode, const vector[u32]& sizes, const char* path) except*:
     cdef FILE* fp = fopen(path, "wb")
     if fp == NULL:
@@ -59,7 +58,6 @@ cdef void save_corpus(const vector[u32]& o_encode, const vector[u32]& sizes, con
 
 
 
-
 def iter_sentences(object s):
     cdef list out = []
     for i in s:
@@ -69,7 +67,8 @@ def iter_sentences(object s):
         else:
             out.append(i)
 
-def first_pass(object ite, int top_k, int min_pair_count, object to_save_path):
+def first_pass(object ite, int top_k, 
+               int min_pair_count, object to_save_path):
 
     # map ca word2id de truy cap unigram va bigram nhanh
     cdef dict o_word2id = {}
@@ -81,9 +80,9 @@ def first_pass(object ite, int top_k, int min_pair_count, object to_save_path):
     o_encode.reserve(600000)
 
     cdef object sent, w, obj        #sents:sentence, w: word, obj: map cua word2id 
-    cdef i32 prev_id = -1, n      #prev_id: prev_word's id, i index in array, n = length of sent
-    cdef u32 i, id                      #id: word's id
-    cdef u64 pair_id                 #encode pair_id  
+    cdef i32 prev_id = -1, n        #prev_id: prev_word's id, i index in array, n = length of sent
+    cdef u32 i, id                  #id: word's id
+    cdef u64 pair_id                #encode pair's id  
 
     for sent in ite:
         n = len(sent)
@@ -121,7 +120,6 @@ def first_pass(object ite, int top_k, int min_pair_count, object to_save_path):
             i += 1
 
     save_corpus(o_encode, o_sizes, str(to_save_path).encode("utf-8"))
-
 
 
 
@@ -171,7 +169,9 @@ def first_pass(object ite, int top_k, int min_pair_count, object to_save_path):
     return unigram, result, o_id2word, o_word2id
 
 
-def save_valid_encode(object iter, dict o_word2id, object to_save_path):
+
+def save_valid_encode(object iter, dict o_word2id, 
+                      object to_save_path):
     cdef vector[u32] o_encode
     cdef vector[u32] o_sizes
 
@@ -192,8 +192,6 @@ def save_valid_encode(object iter, dict o_word2id, object to_save_path):
         o_sizes.push_back(count)
 
     save_corpus(o_encode, o_sizes, str(to_save_path).encode("utf-8"))
-
-
 
 
   
@@ -218,7 +216,6 @@ def build_vocab(cnp.ndarray[cnp.uint32_t, ndim=1] unigram,
         n_id2word[new_id] = o_id2word[old_id]
         n_counts[new_id] = unigram[old_id]
 
-    
 
     return old2new, n_word2id, n_id2word, n_counts
 

@@ -13,14 +13,13 @@ POS_PAIR = {("ADJ","NOUN"), ("NOUN","NOUN"), ("PROPN","PROPN")}
 
 negate = {"no", "not", "never"}
 merge_with_negate = {"ADJ", "VERB", "ADV"}
+
 BAD_PART = {"not", "to"}
 AUX = {"do","does","did","am","is","are","was","were","be","been","being",
        "have","has","had","will","would","shall","should","can","could",
        "may","might","must"}
 INTENS = {"really","very","quite","so","too","extremely","fairly",
-                       "pretty","rather","somewhat","kinda","sorta","at","all"}
-
-
+          "pretty","rather","somewhat","kinda","sorta","at","all"}
 
 
 common_words = [
@@ -37,14 +36,14 @@ common_words = [
 ]
 
 enhance = [
-"excellent","outstanding","masterpiece","brilliant","moving","gripping","heartfelt",
-"charming","delightful","hilarious","clever","smart","entertaining","engaging",
-"compelling","impressive","top-notch","superb","well-acted","well-written","must-watch",
-"mustsee","rewatchable","worth-watching","underrated","believable","nuanced","satisfying",
-"awful","terrible","horrible","dreadful","boring","dull","uneven","messy","incoherent",
-"cliché","cliched","cringe","cringey","wooden","flat","shallow","pretentious",
-"disappointing","forgettable","overrated","underwritten","tedious","unfunny","predictable",
-"derivative","waste","pointless"
+    "excellent","outstanding","masterpiece","brilliant","moving","gripping","heartfelt",
+    "charming","delightful","hilarious","clever","smart","entertaining","engaging",
+    "compelling","impressive","top-notch","superb","well-acted","well-written","must-watch",
+    "mustsee","rewatchable","worth-watching","underrated","believable","nuanced","satisfying",
+    "awful","terrible","horrible","dreadful","boring","dull","uneven","messy","incoherent",
+    "cliché","cliched","cringe","cringey","wooden","flat","shallow","pretentious",
+    "disappointing","forgettable","overrated","underwritten","tedious","unfunny","predictable",
+    "derivative","waste","pointless"
 ]
 
 
@@ -115,7 +114,7 @@ def compute_keep_probs(counts: torch.Tensor=None, t=1e-5, adj_mask: torch.BoolTe
 
     return torch.clamp(p, 0, 1).to(torch.float32)
 
-
+# enhancing counts for negative sampling probs not affect keep_probs
 def enhnce(word2id, counts):
     for w in enhance:
         id = word2id.get(w, None)
@@ -129,7 +128,6 @@ if __name__ == "__main__":
     to_save_train_corpus_dir = os.path.join(base_dir, "..", "..", "data", "o_train_corpus.bin")
     to_save_valid_corpus_dir = os.path.join(base_dir, "..", "..", "data", "o_valid_corpus.bin")
 
-
     train_iter = train_iter_review_sentences()
     valid_iter = valid_iter_review_sentences()
 
@@ -137,12 +135,10 @@ if __name__ == "__main__":
     unigram, top_pairs, o_id2word, o_word2id = first_pass(train_iter, top_k=10000, min_pair_count=6, to_save_path=to_save_train_corpus_dir)
     print("save valid encode...")
     save_valid_encode(valid_iter, o_word2id, to_save_path=to_save_valid_corpus_dir)
-    print(len(o_id2word))
 
     print("converting new vocab...") 
     old2new, word2id, id2word, counts = build_vocab(unigram, o_id2word, o_word2id, min_count=25)
     
-    print(len(id2word))
 
     print("merge with top pair")
     pos_arr = vocab_pos(id2word) 
@@ -200,18 +196,15 @@ if __name__ == "__main__":
     skip_id = get_skip_id(o_word2id, AUX, INTENS)
     negate_id = get_negate_id(o_word2id, negate)
 
-    print(keep_probs[word2id["happy"]])
-    print(counts[word2id["abd"]])
-    print(counts[word2id["huh"]])
 
     bundle = { 
         "o_word2id": o_word2id,
         "o_id2word": o_id2word,
-        "old2new"  : old2new,                   # np.array
+        "old2new"  : old2new,                 # np.array
         "old2new_for_pair": old2new_for_pair, # dict
         "word2id"  : word2id,
         "id2word"  : id2word,
-        "counts"   : counts,                     # tensor
+        "counts"   : counts,                  # tensor
         "keep_probs": keep_probs,             # tensor
         "skip_id"  : skip_id,                 # old id
         "negate_id": negate_id,               # old id 

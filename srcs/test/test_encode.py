@@ -17,8 +17,6 @@ AUX = {"do","does","did","am","is","are","was","were","be","been","being",
 INTENS = {"really","very","quite","so","too","extremely","fairly",
                        "pretty","rather","somewhat","kinda","sorta","at","all"}
 
-
-
 pairs_tokens = [
     "machine","learning","is","nigga","popular","in","many","fields",".",
     "deep","learning","is","a","subfield","of","machine","learning",".",

@@ -201,10 +201,7 @@ def build_mask(id2word, pos_arr):
     return adj_ten, adv_ten, common_ten
  
 
-
-
-
-
+# encode sample text with python
 def encode_with_py(iter, o_word2id, old2new, old2new_for_pair, id2word):
     ids_bin = []
     sent_size = []
