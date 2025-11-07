@@ -99,7 +99,7 @@ Training loss converged after ~5 epochs.
   <img src="results/loss_curve.png" width="700">
 </p>
 
-# 📊 Evaluation
+# Evaluation
 All results use embeddings with the top-2 PCs removed.
 ## Nearest neighbors
 ```
@@ -133,7 +133,7 @@ has learned meaningful semantic relationships.
 </p>
 
 
-## 🚀 How to Run 
+## How to Run 
 ```
 # from project root
 cd srcs/data_pipeline
