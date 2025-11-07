@@ -38,9 +38,9 @@ Embedding_word2vec/
 ```
 
 
-## Approach
+# Approach
 
-Implement Skip-Gram with Negative Sampling (SGNS) from scratch, with a custom preprocessing pipeline optimized for large corpora.
+We implement Skip-Gram with Negative Sampling (SGNS) from scratch, with a custom preprocessing pipeline optimized for large corpora.
 The pipeline is two-pass:
 
 1. **Count tokens & candidate bigrams**
@@ -61,9 +61,7 @@ Counts for merged pairs are lightly smoothed before integration.
 
 To improve signal quality, subsampling keep-probabilities are computed with POS-aware masks, reducing noise while preserving sentiment-bearing adjectives/adverbs.
 
-Training is implemented in PyTorch using efficient ID-based sampling.
-
-# Key Improvements over Vanilla Word2Vec
+## Key Improvements over Vanilla Word2Vec
 
 - Fast preprocessing via Cython (`_count_fast.pyx`, `_encode_corpus.pyx`)
 - POS-aware phrase merging (e.g., `not_good`, `good_movie`, `pick_up`)
@@ -71,7 +69,35 @@ Training is implemented in PyTorch using efficient ID-based sampling.
 - Clean ID pipeline ensures no stray OOV during training
 - Simple semantic evaluation
 
+# Training Details
 
+## Objective
+We train a Skip-Gram with Negative Sampling (SGNS) model.  
+For each center word, the objective increases similarity with real context words and decreases similarity with randomly sampled negative words.  
+This encourages semantically related words to lie close in the embedding space.
+
+## Hyperparameters
+
+| Name | Value |
+|------|-------|
+| Dataset | Movies & TV reviews (HuggingFace) |
+| Vocab size | ~43k |
+| Embedding dim | 300 |
+| Window size | 5 |
+| Negative samples | 15 |
+| Min frequency | 25 |
+| Subsampling | 6e-6 |
+| Optimizer | Adam |
+| Learning rate | 1e-4 |
+| Batch size | 32768 |
+| Epochs | 9 |
+| Loss | SGNS objective |
+
+## Training Loss Curve
+
+<p align="center">
+  <img src="results/loss_curve.png" width="700">
+</p>
 # 📊 Evaluation
 
 Nearest neighbors
@@ -99,7 +125,7 @@ king - man + woman → queen, mistress, prince
 </p>
 
 
-# 🚀 How to Run 
+## 🚀 How to Run 
 ```
 # from project root
 cd srcs/data_pipeline
@@ -109,14 +135,6 @@ cd ../../
 python srcs/data_pipeline/count_tokens.py
 python srcs/data_pipeline/encode_corpus.py
 python -m srcs.embedding.embedding_ids
-```
-
-# Default parameter
-```
-top_k = 10000        (pick top_k highest freq count)
-min_pair_count = 6
-min_count = 25
-t = 6e-6
 ```
 
 
