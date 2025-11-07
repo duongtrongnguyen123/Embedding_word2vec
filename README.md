@@ -52,7 +52,7 @@ The pipeline is two-pass:
    - Drop tokens not in final vocab
    - Re-encode corpus into integer ID streams
 
-We additionally apply POS-aware bigram merging, which helps preserve meaningful multi-word units:
+Additionally apply POS-aware bigram merging, which helps preserve meaningful multi-word units:
 - NOUN + NOUN
 - NEGATION + ADJ/ADV (e.g., `not_good`)
 - VERB + PARTICLE (e.g., `pick_up`)
@@ -69,10 +69,11 @@ Training is implemented in PyTorch using efficient ID-based sampling.
 - POS-aware phrase merging (e.g., `not_good`, `good_movie`, `pick_up`)
 - POS-conditioned subsampling keeps important token classes (ADJ/ADV)
 - Clean ID pipeline ensures no stray OOV during training
-- Simple semantic evaluation + speed benchmarking
+- Simple semantic evaluation
 
 
-# 📊 Sample Results
+# 📊 Evaluation
+
 Nearest neighbors
 ```
 happy       → camper, satisfied, pleased
@@ -91,6 +92,12 @@ Analogy
 ```
 king - man + woman → queen, mistress, prince
 ```
+
+2D Embedding Visualization
+<p align="center">
+  <img src="results/embedding_pca.png" width="700">
+</p>
+
 
 # 🚀 How to Run 
 ```
