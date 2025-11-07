@@ -53,8 +53,8 @@ The pipeline is two-pass:
    - Re-encode corpus into integer ID streams
 
 Additionally apply POS-aware bigram merging, which helps preserve meaningful multi-word units:
-- NOUN + NOUN
-- NEGATION + ADJ/ADV (e.g., `not_good`)
+- NOUN + NOUN, ADJ + NOUN, PROPN + PROPN
+- NEGATION + ADJ/ADV (e.g., `not_good`) (skipping auxiliary verbs and intensifiers)
 - VERB + PARTICLE (e.g., `pick_up`)
 
 Counts for merged pairs are lightly smoothed before integration.
@@ -94,13 +94,14 @@ This encourages semantically related words to lie close in the embedding space.
 | Loss | SGNS objective |
 
 ## Training Loss Curve
-
+Training loss converged after ~5 epochs.
 <p align="center">
   <img src="results/loss_curve.png" width="700">
 </p>
-# 📊 Evaluation
 
-Nearest neighbors
+# 📊 Evaluation
+All results use embeddings with the top-2 PCs removed.
+## Nearest neighbors
 ```
 happy       → camper, satisfied, pleased
 good        → ol'_days, documentry, not_surprising
@@ -114,12 +115,19 @@ boring      → not_help, predictable, predicable
 cringe      → wince, cringeworthy, sophmoric
 ```
 
-Analogy
+## Analogy
 ```
 king - man + woman → queen, mistress, prince
 ```
 
-2D Embedding Visualization
+## 2D Embedding Visualization
+To qualitatively inspect whether the learned embeddings capture semantic structure,
+we project selected word vectors into 2D using PCA.
+
+The plot below shows clusters for several topics such as **animals, vehicles, film/drama, and snacks**.
+Even after projection, related words tend to group together, indicating that the model
+has learned meaningful semantic relationships.
+
 <p align="center">
   <img src="results/embedding_pca.png" width="700">
 </p>
